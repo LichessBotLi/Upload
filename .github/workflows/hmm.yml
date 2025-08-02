@@ -1,0 +1,29 @@
+name: Merge PGNs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'PGN/**.pgn'
+      - 'merge.py'
+
+jobs:
+  merge-pgns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Run merge.py
+        run: python -u merge.py
+
+      - name: Upload merged PGN
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-pgn
+          path: merge.pgn
