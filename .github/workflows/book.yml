@@ -1,0 +1,33 @@
+name: Build Polyglot Book
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'book.py'
+      - '.github/workflows/build-book.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install python-chess
+
+      - name: Run book.py
+        run: python -u book.py
+
+      - name: Upload merged.bin
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-bin
+          path: merged.bin
